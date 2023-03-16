@@ -1,0 +1,84 @@
+
+select *
+from cadeiras
+
+select *
+from alunos
+
+COUNT 
+FROM ALUNOS
+
+select max(alunos.num_aluno)+1 from alunos
+
+
+/*exercicio 1*/
+CREATE OR REPLACE PROCEDURE enroll_student(student in number, subject in number )
+IS
+BEGIN
+    INSERT INTO inscricoes VALUES (
+        student,
+    (SELECT alunos.cod_curso
+        FROM ALUNOS
+    WHERE alunos.num_aluno = student),
+    subject,
+    CURRENT_DATE,
+    null,
+    null
+    );
+END; 
+exec enroll_student(1,5)
+
+/*student alunos.nome%TYPE*/
+
+
+select alunos.num_aluno.nextval crom
+/*exercicio 2*/
+CREATE OR REPLACE PROCEDURE new_student(student in varchar2, gender in char, degree_name number)
+IS
+BEGIN 
+    INSERT INTO alunos VALUES (
+        seq_aluno.nextval,
+        student,
+        null,
+        CURRENT_DATE,
+        gender,
+        degree_name
+        );
+END;
+exec new_student('Fredd', 'M', 1);
+
+
+/*exercicio 3*/
+
+CREATE OR REPLACE PROCEDURE test_cursor
+IS
+CURSOR cur_aluno IS SELECT * FROM alunos;
+v_aluno alunos%ROWTYPE;
+BEGIN
+ OPEN cur_aluno;
+ FETCH cur_aluno into v_aluno;
+ dbms_output.put_line(v_aluno.num_aluno || ' ' || v_aluno.nome);
+ CLOSE cur_aluno;
+END;
+
+exec test_cursor
+
+CREATE OR REPLACE PROCEDURE test_cursor_1
+IS
+CURSOR cur_aluno IS SELECT * FROM alunos;
+v_aluno alunos%ROWTYPE;
+BEGIN
+ OPEN cur_aluno;
+LOOP
+ FETCH cur_aluno into v_aluno;
+ EXIT WHEN cur_aluno%NOTFOUND;
+ dbms_output.put_line(v_aluno.num_aluno || ' ' || v_aluno.nome);
+ END LOOP;
+ CLOSE cur_aluno;
+END;
+
+exec test_cursor_1
+
+
+SELECT alunos.num_aluno FROM ALUNOS INNER JOIN inscricoes ON alunos.num_aluno = inscricoes.num_aluno
+SELECT alunos.nome, alunos.sexo, alunos.cod_curso , cursos.nome as ncurso FROM alunos INNER JOIN cursos ON alunos.cod_curso = cursos.cod_curso
