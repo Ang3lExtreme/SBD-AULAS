@@ -7,10 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="sbdaula2" />
+        <module name="sbdaula3" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="sbdaula2" target="18" />
+      <module name="sbdaula3" target="18" />
     </bytecodeTargetLevel>
   </component>
 </project>
